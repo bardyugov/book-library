@@ -1,0 +1,6 @@
+bin/
+obj/
+.idea/
+.git/
+postgres-data/
+.DS_STORE
