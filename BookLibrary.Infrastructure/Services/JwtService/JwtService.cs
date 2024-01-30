@@ -11,24 +11,21 @@ namespace BookLibrary.Infrastructure.Services.JwtService;
 public class JwtService : IJwtService
 {
     private const string TokenSecret = "3123n12kl3hnklo123hnl12h312l3k12lk312hlk31";
+    private const string ClaimKey = "AuthorId";
     private static readonly TimeSpan TokenLifeTime = TimeSpan.FromHours(8);
-    
-    private string GetStringRole(List<Role> roles)
-    {
-        bool isFindRole = roles.Exists(role => role == Role.Admin);
-        if (isFindRole) return RolesConstants.Admin;
-        
-        return RolesConstants.User;
-    }
     
     public string GenerateToken(Author author)
     {
         var claims = new List<Claim>
         {
             new (JwtRegisteredClaimNames.Jti,Guid.NewGuid().ToString()),
-            new ("AuthorId", author.Id.ToString()),
-            new (ClaimTypes.Role, GetStringRole(author.Roles))
+            new (ClaimKey, author.Id.ToString()),
         };
+        
+        foreach (var role in author.Roles)
+        {
+            claims.Add(new Claim(ClaimTypes.Role, role.ToString()));
+        }
         
         var key = Encoding.UTF8.GetBytes(TokenSecret);
             

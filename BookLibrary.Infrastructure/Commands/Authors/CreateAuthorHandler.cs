@@ -25,8 +25,7 @@ public class CreateAuthorHandler : IRequestHandler<CreateAuthorCommand, Author>
             Surname = "dasdada",
             Password = "dasdas",
             Age = 25,
-            Patronymic = "Dasda"
-
+            Patronymic = "Dasda",
         };
         var token =  _jwtService.GenerateToken(newAuthor);
         Console.WriteLine(token);

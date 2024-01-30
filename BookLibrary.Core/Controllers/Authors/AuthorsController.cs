@@ -25,10 +25,16 @@ public class AuthorsController : ControllerBase
     }
 
     [HttpGet]
-    [Authorize(Policy = RolesConstants.User)]
+    [Authorize(Policy = RolesConstants.Admin)]
     public async Task<object> Get()
     {
         return "Private route";
     }
     
+    [HttpPut]
+    [Authorize(Policy = RolesConstants.User)]
+    public async Task<object> Put()
+    {
+        return "Private route";
+    }
 }

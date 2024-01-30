@@ -15,10 +15,8 @@ using Microsoft.IdentityModel.Tokens;
 var builder = WebApplication.CreateBuilder(args);
 var config = builder.Configuration;
 
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<DatabaseContext>(
-    opt => opt.UseNpgsql(builder.Configuration.GetConnectionString("URI")));
+    opt => opt.UseNpgsql(config["URI"]));
 
 builder.Services.AddMediatR(x => 
     x.RegisterServicesFromAssemblies(typeof(CreateAuthorHandler).Assembly, typeof(CreateAuthorCommand).Assembly));
@@ -26,6 +24,9 @@ builder.Services.AddMediatR(x =>
 builder.Services.AddTransient<IAuthorRepository, AuthorRepository>();
 builder.Services.AddTransient<IPasswordService, PasswordService>();
 builder.Services.AddTransient<IJwtService, JwtService>();
+
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
 
 builder.Services.AddControllers();
 
@@ -47,7 +48,7 @@ builder.Services.AddAuthorization(options =>
 {
     options.AddPolicy(RolesConstants.User, rolePolice =>
     {
-        rolePolice.RequireRole(RolesConstants.User);
+        rolePolice.RequireRole(RolesConstants.User, RolesConstants.Admin);
     });
         
     options.AddPolicy(RolesConstants.Admin, rolePolice =>
