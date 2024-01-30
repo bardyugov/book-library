@@ -6,6 +6,7 @@
     </PropertyGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\BookLibrary.Application\BookLibrary.Application.csproj" />
       <ProjectReference Include="..\BookLibrary.Domain\BookLibrary.Domain.csproj" />
     </ItemGroup>
 
@@ -15,7 +16,9 @@
         <PrivateAssets>all</PrivateAssets>
         <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       </PackageReference>
+      <PackageReference Include="Microsoft.IdentityModel.Tokens" Version="7.3.0" />
       <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="8.0.0" />
+      <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="7.3.0" />
     </ItemGroup>
 
 </Project>
