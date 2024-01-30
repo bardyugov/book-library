@@ -13,13 +13,16 @@ public class Author : BaseEntity
     [Required]
     public string Patronymic { get; set; }
     
+    [Required] 
+    public string Email { get; set; }
+    
     [Required]
     public string Password { get; set; }
     
     public int Age { get; set; }
     
     public List<Role> Roles { get; set; } = [ Role.User ];
-    
+
     public List<Book> Books { get; set; }
     
     public List<Opinion> Opinions { get; set; }
