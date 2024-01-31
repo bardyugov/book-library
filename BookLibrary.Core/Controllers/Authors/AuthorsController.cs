@@ -1,13 +1,11 @@
 using BookLibrary.Application.Commands.Authors;
-using BookLibrary.Infrastructure.Services.Roles;
 using MediatR;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BookLibrary.Core.Controllers.Authors;
 
 [ApiController]
-[Route("authors")]
+[Route("Authors/[action]")]
 public class AuthorsController : ControllerBase
 {
     private readonly IMediator _mediator;
@@ -16,25 +14,11 @@ public class AuthorsController : ControllerBase
     {
         _mediator = mediator;
     }
-    
-    [HttpPost]
-    public async Task<IActionResult> Create(CreateAuthorCommand command)
-    {
-        var author = await _mediator.Send(command);
-        return Ok(author);
-    }
 
-    [HttpGet]
-    [Authorize(Policy = RolesConstants.Admin)]
-    public async Task<object> Get()
+    [HttpPost]
+    public async Task<IActionResult> Create(CreateAuthorCommand author)
     {
-        return "Private route";
-    }
-    
-    [HttpPut]
-    [Authorize(Policy = RolesConstants.User)]
-    public async Task<object> Put()
-    {
-        return "Private route";
+        var newAuth = await _mediator.Send(author);
+        return Ok(newAuth.Value);
     }
 }

@@ -12,4 +12,6 @@ public interface IAuthorRepository
     Task<Result<Author>> FindUnique(Guid id, CancellationToken token);
     
     Task<List<Author>> FindAll(CancellationToken token);
+
+    Task<Result<Author>> FindByEmail(string email, CancellationToken token);
 }

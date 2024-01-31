@@ -2,11 +2,12 @@ using BookLibrary.Application.Commands.Authors;
 using BookLibrary.Application.Repositories;
 using BookLibrary.Application.Services;
 using BookLibrary.Domain.Models;
+using FluentResults;
 using MediatR;
 
 namespace BookLibrary.Infrastructure.Commands.Authors;
 
-public class CreateAuthorHandler : IRequestHandler<CreateAuthorCommand, Author>
+public class CreateAuthorHandler : IRequestHandler<CreateAuthorCommand, Result<Author>>
 {
     private readonly IAuthorRepository _authorRepository;
     private readonly IJwtService _jwtService;
@@ -17,18 +18,13 @@ public class CreateAuthorHandler : IRequestHandler<CreateAuthorCommand, Author>
         _jwtService = jwtService;
     }
 
-    public async Task<Author> Handle(CreateAuthorCommand request, CancellationToken cancellationToken)
+    public async Task<Result<Author>> Handle(CreateAuthorCommand request, CancellationToken cancellationToken)
     {
-        var newAuthor = new Author
+        var isFindAuthor = await _authorRepository.FindByEmail(request.Email, cancellationToken);
+        if (isFindAuthor.IsFailed)
         {
-            Name = "dasda",
-            Surname = "dasdada",
-            Password = "dasdas",
-            Age = 25,
-            Patronymic = "Dasda",
-        };
-        var token =  _jwtService.GenerateToken(newAuthor);
-        Console.WriteLine(token);
-        return newAuthor;
+            return Result.Fail(isFindAuthor.Errors);
+        }
+        return new Author();
     }
 }

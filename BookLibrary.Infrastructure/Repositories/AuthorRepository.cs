@@ -42,4 +42,12 @@ public class AuthorRepository : IAuthorRepository
         var authors = await _context.Authors.ToListAsync(token);
         return authors;
     }
+
+    public async Task<Result<Author>> FindByEmail(string email, CancellationToken token)
+    {
+        var author = await _context.Authors.FirstOrDefaultAsync(a => a.Email == email, token);
+        if (author != null)
+            return Result.Fail("Not found author");
+        return Result.Ok(author);
+    }
 }

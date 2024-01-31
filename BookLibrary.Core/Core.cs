@@ -22,7 +22,7 @@ var builder = WebApplication.CreateBuilder(args);
 var config = builder.Configuration;
 
 builder.Services.AddDbContext<DatabaseContext>(
-    opt => opt.UseNpgsql(config["URI"]));
+    opt => opt.UseNpgsql(config["ConnectionStrings:URI"]));
 
 builder.Services.AddMediatR(x => 
     x.RegisterServicesFromAssemblies(assemblies));
