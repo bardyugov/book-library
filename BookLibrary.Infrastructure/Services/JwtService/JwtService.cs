@@ -4,15 +4,20 @@ using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
-using BookLibrary.Infrastructure.Services.Roles;
 
 namespace BookLibrary.Infrastructure.Services.JwtService;
 
 public class JwtService : IJwtService
 {
-    private const string TokenSecret = "3123n12kl3hnklo123hnl12h312l3k12lk312hlk31";
     private const string ClaimKey = "AuthorId";
+    private readonly string _tokenSecret = "Keydasdasdasdasdasd12312312dewqxasddasd";
     private static readonly TimeSpan TokenLifeTime = TimeSpan.FromHours(8);
+
+    public JwtService(IConfigService configService)
+    {
+        var key = configService.GetValue("JwtSettings:Key");
+        if (key != null) _tokenSecret = key;
+    }
     
     public string GenerateToken(Author author)
     {
@@ -27,7 +32,7 @@ public class JwtService : IJwtService
             claims.Add(new Claim(ClaimTypes.Role, role.ToString()));
         }
         
-        var key = Encoding.UTF8.GetBytes(TokenSecret);
+        var key = Encoding.UTF8.GetBytes(_tokenSecret);
             
         var tokenDescriptor = new SecurityTokenDescriptor
         {
