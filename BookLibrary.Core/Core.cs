@@ -8,6 +8,7 @@ using BookLibrary.Infrastructure.Services.JwtService;
 using BookLibrary.Infrastructure.Services.PasswordService;
 using BookLibrary.Core.Behavior;
 using BookLibrary.Core.Middlewares;
+using BookLibrary.Infrastructure.Services.AuthenticationService;
 using BookLibrary.Infrastructure.Services.Roles;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
@@ -31,6 +32,7 @@ builder.Services.AddTransient<IAuthorRepository, AuthorRepository>();
 builder.Services.AddTransient<IPasswordService, PasswordService>();
 builder.Services.AddTransient<IJwtService, JwtService>();
 builder.Services.AddTransient<IConfigService, ConfigService>();
+builder.Services.AddTransient<IAuthenticationService, AuthenticationService>();
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
