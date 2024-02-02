@@ -46,8 +46,13 @@ public class AuthorRepository : IAuthorRepository
     public async Task<Result<Author>> FindByEmail(string email, CancellationToken token)
     {
         var author = await _context.Authors.FirstOrDefaultAsync(a => a.Email == email, token);
-        if (author != null)
+        if (author is null)
             return Result.Fail("Not found author");
         return Result.Ok(author);
+    }
+
+    public async Task SaveChangesAsync(CancellationToken token)
+    {
+        await _context.SaveChangesAsync(token);
     }
 }
