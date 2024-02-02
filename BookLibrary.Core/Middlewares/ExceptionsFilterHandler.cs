@@ -26,14 +26,19 @@ public class ExceptionsFilterHandler
 
     private Task HandleException(Exception exception, HttpContext context)
     {
-        var code = HttpStatusCode.InternalServerError;
+        var code = HttpStatusCode.BadRequest;
         var result = string.Empty;
-            
-        if (exception is ValidationException validationException)
+
+        switch (exception)
         {
-            code = HttpStatusCode.BadRequest;
-            Console.WriteLine(JsonSerializer.Serialize(validationException.Errors));
-            result = JsonSerializer.Serialize(validationException.Errors);
+           case ValidationException validationException:
+               code = HttpStatusCode.BadRequest;
+               Console.WriteLine(JsonSerializer.Serialize(validationException.Errors));
+               result = JsonSerializer.Serialize(validationException.Errors);
+               break;
+           case UnauthorizedAccessException:
+               code = HttpStatusCode.Unauthorized;
+               break;
         }
 
         context.Response.ContentType = "application/json";
@@ -41,7 +46,7 @@ public class ExceptionsFilterHandler
             
         if (result.IsNullOrEmpty())
         {
-            result = JsonSerializer.Serialize(new { error = exception.Message });
+            result = JsonSerializer.Serialize(new { Error = exception.Message });
         }
 
         return context.Response.WriteAsync(result);

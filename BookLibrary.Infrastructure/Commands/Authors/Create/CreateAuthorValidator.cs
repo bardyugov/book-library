@@ -1,7 +1,7 @@
-using BookLibrary.Application.Commands.Authors;
+using BookLibrary.Application.Commands.Authors.Create;
 using FluentValidation;
 
-namespace BookLibrary.Infrastructure.Commands.Authors;
+namespace BookLibrary.Infrastructure.Commands.Authors.Create;
 
 public class CreateAuthorValidator : AbstractValidator<CreateAuthorCommand>
 {
@@ -29,7 +29,6 @@ public class CreateAuthorValidator : AbstractValidator<CreateAuthorCommand>
             .EmailAddress();
 
         RuleFor(v => v.Age)
-            .NotEmpty()
-            .WithMessage("Age not be null");
+            .NotEmpty();
     }
 }

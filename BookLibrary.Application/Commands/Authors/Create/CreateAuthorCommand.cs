@@ -2,9 +2,9 @@ using MediatR;
 using BookLibrary.Domain.Models;
 using FluentResults;
 
-namespace BookLibrary.Application.Commands.Authors;
+namespace BookLibrary.Application.Commands.Authors.Create;
 
-public class CreateAuthorCommand : IRequest<Result<Author>>
+public class CreateAuthorCommand : IRequest<Result<CreateAuthorCommandResult>>
 {
     public string Name { get; set; }
     
