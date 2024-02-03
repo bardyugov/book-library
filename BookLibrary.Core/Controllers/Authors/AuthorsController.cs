@@ -23,16 +23,16 @@ public class AuthorsController : BaseController
     }
 
     [HttpPost]
-    public async Task<IActionResult> Create(CreateAuthorCommand author)
+    public async Task<IActionResult> Create(CreateAuthorCommand author, CancellationToken cancellationToken)
     {
-        var result = await _mediator.Send(author);
+        var result = await _mediator.Send(author, cancellationToken);
         return ConvertToActionResult(result);
     }
 
     [HttpPost]
-    public async Task<IActionResult> Login(LoginAuthorCommand author)
+    public async Task<IActionResult> Login(LoginAuthorCommand author, CancellationToken cancellationToken)
     {
-        var result = await _mediator.Send(author);
+        var result = await _mediator.Send(author, cancellationToken);
         return ConvertToActionResult(result);
     }
 

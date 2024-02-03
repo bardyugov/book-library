@@ -33,7 +33,6 @@ public class ExceptionsFilterHandler
         {
            case ValidationException validationException:
                code = HttpStatusCode.BadRequest;
-               Console.WriteLine(JsonSerializer.Serialize(validationException.Errors));
                result = JsonSerializer.Serialize(validationException.Errors);
                break;
            case UnauthorizedAccessException:
