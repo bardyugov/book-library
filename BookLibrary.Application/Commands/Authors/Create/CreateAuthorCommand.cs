@@ -1,5 +1,4 @@
 using MediatR;
-using BookLibrary.Domain.Models;
 using FluentResults;
 
 namespace BookLibrary.Application.Commands.Authors.Create;
