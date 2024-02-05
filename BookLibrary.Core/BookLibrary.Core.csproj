@@ -20,4 +20,8 @@
       <ProjectReference Include="..\BookLibrary.Infrastructure\BookLibrary.Infrastructure.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="Controllers\Books\" />
+    </ItemGroup>
+
 </Project>
