@@ -1,6 +1,7 @@
 using BookLibrary.Application.Commands.Books.Create;
-using BookLibrary.Application.Queries.Books;
 using BookLibrary.Domain.Models;
+using BookLibrary.Application.Queries.Books.GetBookByNameQuery;
+using BookLibrary.Application.Queries.Books.GetBooksByAuthorIdQuery;
 using BookLibrary.Infrastructure.Services.Roles;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;

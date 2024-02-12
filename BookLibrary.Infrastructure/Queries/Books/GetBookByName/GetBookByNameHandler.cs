@@ -1,4 +1,4 @@
-using BookLibrary.Application.Queries.Books;
+using BookLibrary.Application.Queries.Books.GetBookByNameQuery;
 using BookLibrary.Application.Repositories;
 using BookLibrary.Application.Services;
 using BookLibrary.Domain.Models;
@@ -7,7 +7,7 @@ using MediatR;
 
 namespace BookLibrary.Infrastructure.Queries.Books.GetBookByName;
 
-public class GetBookByNameHandler : IRequestHandler<GetBookByNameQuery, Result<Book>>
+public class GetBookByNameHandler : IRequestHandler<GetBookByNameQuery, Result<GetBookByNameQueryResult>>
 {
     private readonly IAuthenticationService _authenticationService;
     private readonly IBookRepository _bookRepository;
@@ -17,13 +17,28 @@ public class GetBookByNameHandler : IRequestHandler<GetBookByNameQuery, Result<B
         _authenticationService = authenticationService;
         _bookRepository = bookRepository;
     }
+
+    private GetBookByNameQueryResult MapToResult(Book book)
+    {
+        return new GetBookByNameQueryResult()
+        {
+            Name = book.Name,
+            Description = book.Description,
+            Path = book.Path,
+            CountReaders = book.CountReaders,
+            AuthorName = book.Author.Name,
+            Comments = book.Comments,
+            Complaints = book.Complaints,
+            Opinions = book.Opinions
+        };
+    }
     
-    public async Task<Result<Book>> Handle(GetBookByNameQuery request, CancellationToken cancellationToken)
+    public async Task<Result<GetBookByNameQueryResult>> Handle(GetBookByNameQuery request, CancellationToken cancellationToken)
     {
         var author = await _authenticationService.Authenticate(cancellationToken);
         var isFindBook = await _bookRepository.FindByNameWithRelations(request.Name, cancellationToken);
         if (isFindBook.IsFailed)
-            return isFindBook;
+            return Result.Fail(isFindBook.Errors.Last().Message);
 
         if (author.Id != isFindBook.Value.Author.Id)
         {
@@ -32,6 +47,8 @@ public class GetBookByNameHandler : IRequestHandler<GetBookByNameQuery, Result<B
                 cancellationToken);
         }
 
-        return Result.Ok(isFindBook.Value);
+        var result = MapToResult(isFindBook.Value);
+        
+        return Result.Ok(result);
     }
 }

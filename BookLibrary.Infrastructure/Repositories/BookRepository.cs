@@ -65,16 +65,14 @@ public class BookRepository : IBookRepository
         return Result.Ok(book);
     }
 
-    public List<Book> FindManyWithAuthorId(Guid id, CancellationToken token)
+    public Task<List<Book>> FindManyWithAuthorId(Guid id, CancellationToken token)
     {
-        var books = _context.Books
+        return _context.Books
             .Include(v => v.Comments)
             .Include(v => v.Complaints)
             .Include(v => v.Opinions)
             .Where(v => v.Author.Id == id)
-            .ToList();
-
-        return books;
+            .ToListAsync(token);
     }
 
     public async Task<Result<Book>> UpdateCountReaders(Guid id, int count, CancellationToken token)
@@ -85,6 +83,7 @@ public class BookRepository : IBookRepository
 
         isFindBook.Value.CountReaders = count;
         await _context.SaveChangesAsync(token);
+        
         return isFindBook;
     }
 }

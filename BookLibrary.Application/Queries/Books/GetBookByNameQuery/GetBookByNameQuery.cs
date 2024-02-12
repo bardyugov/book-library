@@ -2,9 +2,9 @@ using BookLibrary.Domain.Models;
 using FluentResults;
 using MediatR;
 
-namespace BookLibrary.Application.Queries.Books;
+namespace BookLibrary.Application.Queries.Books.GetBookByNameQuery;
 
-public class GetBookByNameQuery : IRequest<Result<Book>>
+public class GetBookByNameQuery : IRequest<Result<GetBookByNameQueryResult>>
 {
     public string Name { get; set; }
 
