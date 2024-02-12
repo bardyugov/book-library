@@ -14,7 +14,7 @@ public class Book : BaseEntity
     public string Path { get; set; }
     
     [Required]
-    public string CountReaders { get; set; }
+    public int CountReaders { get; set; }
     
     [Required]
     public Author Author { get; set; } = null!;
