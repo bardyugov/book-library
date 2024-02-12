@@ -50,4 +50,41 @@ public class BookRepository : IBookRepository
     {
         await _context.SaveChangesAsync(token);
     }
+
+    public async Task<Result<Book>> FindByNameWithRelations(string name, CancellationToken token)
+    {
+        var book = await _context.Books
+            .Include(v => v.Comments)
+            .Include(v => v.Complaints)
+            .Include(v => v.Opinions)
+            .FirstOrDefaultAsync(v => v.Name == name, token);
+
+        if (book is null)
+            return Result.Fail("Not found book");
+
+        return Result.Ok(book);
+    }
+
+    public List<Book> FindManyWithAuthorId(Guid id, CancellationToken token)
+    {
+        var books = _context.Books
+            .Include(v => v.Comments)
+            .Include(v => v.Complaints)
+            .Include(v => v.Opinions)
+            .Where(v => v.Author.Id == id)
+            .ToList();
+
+        return books;
+    }
+
+    public async Task<Result<Book>> UpdateCountReaders(Guid id, int count, CancellationToken token)
+    {
+        var isFindBook = await FindById(id, token);
+        if (isFindBook.IsFailed)
+            return isFindBook;
+
+        isFindBook.Value.CountReaders = count;
+        await _context.SaveChangesAsync(token);
+        return isFindBook;
+    }
 }

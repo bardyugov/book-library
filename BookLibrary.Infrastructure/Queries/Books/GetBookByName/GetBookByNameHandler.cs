@@ -20,10 +20,18 @@ public class GetBookByNameHandler : IRequestHandler<GetBookByNameQuery, Result<B
     
     public async Task<Result<Book>> Handle(GetBookByNameQuery request, CancellationToken cancellationToken)
     {
-        await _authenticationService.Authenticate(cancellationToken);
-        var isFindBook = await _bookRepository.FindByName(request.Name, cancellationToken);
+        var author = await _authenticationService.Authenticate(cancellationToken);
+        var isFindBook = await _bookRepository.FindByNameWithRelations(request.Name, cancellationToken);
         if (isFindBook.IsFailed)
-            return Result.Fail("Book not found");
-        return Result.Fail("dasdas");
+            return isFindBook;
+
+        if (author.Id != isFindBook.Value.Author.Id)
+        {
+            isFindBook.Value.CountReaders += 1;
+            await _bookRepository.UpdateCountReaders(isFindBook.Value.Id, isFindBook.Value.CountReaders,
+                cancellationToken);
+        }
+
+        return Result.Ok(isFindBook.Value);
     }
 }

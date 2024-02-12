@@ -7,4 +7,9 @@ namespace BookLibrary.Application.Queries.Books;
 public class GetBookByNameQuery : IRequest<Result<Book>>
 {
     public string Name { get; set; }
+
+    public GetBookByNameQuery(string name)
+    {
+        Name = name;
+    }   
 }
