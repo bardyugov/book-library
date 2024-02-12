@@ -1,6 +1,7 @@
 using System.Net;
 using System.Text.Json;
 using FluentValidation;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 
 namespace BookLibrary.Core.Middlewares;

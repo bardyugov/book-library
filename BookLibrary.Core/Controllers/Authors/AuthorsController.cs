@@ -14,16 +14,14 @@ namespace BookLibrary.Core.Controllers.Authors;
 public class AuthorsController : BaseController
 {
     private readonly IMediator _mediator;
-    private readonly IAuthenticationService _authenticationService;
     
     public AuthorsController(IMediator mediator, IAuthenticationService authenticationService)
     {
         _mediator = mediator;
-        _authenticationService = authenticationService;
     }
 
     [HttpPost]
-    public async Task<IActionResult> Create(CreateAuthorCommand author, CancellationToken cancellationToken)
+    public async Task<IActionResult> Register(CreateAuthorCommand author, CancellationToken cancellationToken)
     {
         var result = await _mediator.Send(author, cancellationToken);
         return ConvertToActionResult(result);
@@ -37,10 +35,9 @@ public class AuthorsController : BaseController
     }
 
     [HttpGet]
-    [Authorize(Policy = RolesConstants.User)]
+    [Authorize(Policy = RolesConstants.Admin)]
     public async Task<IActionResult> Get([FromQuery(Name = "Id")] Guid id, CancellationToken cancellationToken)
     {
-        await _authenticationService.Authenticate(HttpContext, cancellationToken);
         var result = await _mediator.Send(new GetAuthorByIdQuery(id), cancellationToken);
         return ConvertToActionResult(result);
     }

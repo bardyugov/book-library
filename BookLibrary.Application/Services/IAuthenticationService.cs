@@ -5,5 +5,5 @@ namespace BookLibrary.Application.Services;
 
 public interface IAuthenticationService
 {
-    Task<Author> Authenticate(HttpContext context, CancellationToken cancellationToken);
+    Task<Author> Authenticate(CancellationToken cancellationToken);
 }

@@ -21,7 +21,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Controllers\Books\" />
+      <Folder Include="wwwroot\" />
     </ItemGroup>
 
 </Project>

@@ -1,4 +1,5 @@
 using System.Text;
+using System.Text.Json.Serialization;
 using BookLibrary.Application.Repositories;
 using BookLibrary.Application.Services;
 using BookLibrary.Infrastructure;
@@ -9,6 +10,7 @@ using BookLibrary.Infrastructure.Services.PasswordService;
 using BookLibrary.Core.Behavior;
 using BookLibrary.Core.Middlewares;
 using BookLibrary.Infrastructure.Services.AuthenticationService;
+using BookLibrary.Infrastructure.Services.FileService;
 using BookLibrary.Infrastructure.Services.Roles;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
@@ -25,19 +27,26 @@ var config = builder.Configuration;
 builder.Services.AddDbContext<DatabaseContext>(
     opt => opt.UseNpgsql(config["ConnectionStrings:URI"]));
 
-builder.Services.AddMediatR(x => 
+builder.Services.AddMediatR(x =>
     x.RegisterServicesFromAssemblies(assemblies));
 
 builder.Services.AddTransient<IAuthorRepository, AuthorRepository>();
+builder.Services.AddTransient<IBookRepository, BookRepository>();
 builder.Services.AddTransient<IPasswordService, PasswordService>();
 builder.Services.AddTransient<IJwtService, JwtService>();
 builder.Services.AddTransient<IConfigService, ConfigService>();
 builder.Services.AddTransient<IAuthenticationService, AuthenticationService>();
+builder.Services.AddTransient<IFileService, FileService>();
+builder.Services.AddHttpContextAccessor();
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddControllers();
+builder.Services.AddControllers().AddJsonOptions(configure =>
+{
+    configure.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
+    configure.JsonSerializerOptions.WriteIndented = true;
+});
 
 builder.Services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
 
@@ -61,7 +70,7 @@ builder.Services.AddAuthorization(options =>
     {
         rolePolice.RequireRole(RolesConstants.User, RolesConstants.Admin);
     });
-        
+
     options.AddPolicy(RolesConstants.Admin, rolePolice =>
     {
         rolePolice.RequireRole(RolesConstants.Admin);
@@ -77,6 +86,7 @@ app.UseAuthentication();
 app.UseAuthorization();
 app.UseSwagger();
 app.UseSwaggerUI();
+app.UseStaticFiles();
 app.UseCors(x => x
     .AllowAnyOrigin()
     .AllowAnyMethod()

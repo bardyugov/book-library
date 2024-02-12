@@ -8,15 +8,17 @@ namespace BookLibrary.Infrastructure.Services.AuthenticationService;
 public class AuthenticationService : IAuthenticationService
 {
     private readonly IAuthorRepository _authorRepository;
+    private readonly IHttpContextAccessor _httpContextAccessor;
 
-    public AuthenticationService(IAuthorRepository authorRepository)
+    public AuthenticationService(IAuthorRepository authorRepository, IHttpContextAccessor httpContextAccessor)
     {
         _authorRepository = authorRepository;
+        _httpContextAccessor = httpContextAccessor;
     }
     
-    public async Task<Author> Authenticate(HttpContext context, CancellationToken cancellationToken)
+    public async Task<Author> Authenticate(CancellationToken cancellationToken)
     {
-        var stringAuthorId = context.User.Claims
+        var stringAuthorId = _httpContextAccessor.HttpContext.User.Claims
             .ToList()
             .Find(x => x.Type == "AuthorId" )
             .Value;

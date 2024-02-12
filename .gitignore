@@ -2,5 +2,6 @@ bin/
 obj/
 .idea/
 .git/
+wwwroot/
 postgres-data/
 .DS_STORE

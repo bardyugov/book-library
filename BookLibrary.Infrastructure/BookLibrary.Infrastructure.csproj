@@ -27,7 +27,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Queries\Books\" />
+      <Folder Include="Migrations\" />
     </ItemGroup>
 
 </Project>
