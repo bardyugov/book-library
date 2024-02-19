@@ -20,16 +20,49 @@ public class GetBookByNameHandler : IRequestHandler<GetBookByNameQuery, Result<G
 
     private GetBookByNameQueryResult MapToResult(Book book)
     {
+        List<Comment> comments = book.Comments
+            .Select(v => new Comment()
+            {
+                CreateDate = v.CreateDate,
+                Content = v.Content,
+                Id = v.Id,
+                UpdateDate = v.UpdateDate
+            })
+            .ToList();
+
+        List<Opinion> opinions = book.Opinions
+            .Select(v => new Opinion()
+            {
+                Id = v.Id,
+                CreateDate = v.CreateDate,
+                UpdateDate = v.UpdateDate,
+                Reaction = v.Reaction
+            })
+            .ToList();
+
+        List<Complaint> complaints = book.Complaints
+            .Select(v => new Complaint()
+            {
+                CreateDate = v.CreateDate,
+                Content = v.Content,
+                Id = v.Id,
+                UpdateDate = v.UpdateDate
+            })
+            .ToList();
+        
         return new GetBookByNameQueryResult()
         {
+            Id = book.Id,
             Name = book.Name,
             Description = book.Description,
             Path = book.Path,
             CountReaders = book.CountReaders,
             AuthorName = book.Author.Name,
-            Comments = book.Comments,
-            Complaints = book.Complaints,
-            Opinions = book.Opinions
+            Comments = comments,
+            Complaints = complaints,
+            Opinions = opinions,
+            CreateDate = book.CreateDate,
+            UpdateDate = book.UpdateDate
         };
     }
     
@@ -39,16 +72,15 @@ public class GetBookByNameHandler : IRequestHandler<GetBookByNameQuery, Result<G
         var isFindBook = await _bookRepository.FindByNameWithRelations(request.Name, cancellationToken);
         if (isFindBook.IsFailed)
             return Result.Fail(isFindBook.Errors.Last().Message);
-
+        
         if (author.Id != isFindBook.Value.Author.Id)
         {
             isFindBook.Value.CountReaders += 1;
             await _bookRepository.UpdateCountReaders(isFindBook.Value.Id, isFindBook.Value.CountReaders,
                 cancellationToken);
         }
-
-        var result = MapToResult(isFindBook.Value);
         
+        var result = MapToResult(isFindBook.Value);
         return Result.Ok(result);
     }
 }

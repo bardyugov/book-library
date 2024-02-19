@@ -32,6 +32,8 @@ builder.Services.AddMediatR(x =>
 
 builder.Services.AddTransient<IAuthorRepository, AuthorRepository>();
 builder.Services.AddTransient<IBookRepository, BookRepository>();
+builder.Services.AddTransient<ICommentRepository, CommentRepository>();
+builder.Services.AddTransient<IOpinionRepository, OpinionRepository>();
 builder.Services.AddTransient<IPasswordService, PasswordService>();
 builder.Services.AddTransient<IJwtService, JwtService>();
 builder.Services.AddTransient<IConfigService, ConfigService>();

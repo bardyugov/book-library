@@ -21,11 +21,11 @@ public class BookRepository : IBookRepository
 
     public async Task<Result<Book>> FindByName(string name, CancellationToken token)
     {
-        var isFindBook = await _context.Books.FirstOrDefaultAsync(b => b.Name == name, token);
-        if (isFindBook is null)
+        var book = await _context.Books.FirstOrDefaultAsync(b => b.Name == name, token);
+        if (book is null)
             return Result.Fail("Book not found");
 
-        return isFindBook;
+        return book;
     }
 
     public async Task<Result<Book>> FindById(Guid id, CancellationToken token)
@@ -54,9 +54,10 @@ public class BookRepository : IBookRepository
     public async Task<Result<Book>> FindByNameWithRelations(string name, CancellationToken token)
     {
         var book = await _context.Books
-            .Include(v => v.Comments)
             .Include(v => v.Complaints)
             .Include(v => v.Opinions)
+            .Include(v => v.Comments)
+            .Include(v => v.Author)
             .FirstOrDefaultAsync(v => v.Name == name, token);
 
         if (book is null)

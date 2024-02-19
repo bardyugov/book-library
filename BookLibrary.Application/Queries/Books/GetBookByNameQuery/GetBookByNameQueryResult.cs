@@ -2,7 +2,7 @@ using BookLibrary.Domain.Models;
 
 namespace BookLibrary.Application.Queries.Books.GetBookByNameQuery;
 
-public class GetBookByNameQueryResult
+public class GetBookByNameQueryResult : BaseEntity
 {
     public string Name { get; set; }
     
