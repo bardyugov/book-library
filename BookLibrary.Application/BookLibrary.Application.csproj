@@ -15,4 +15,8 @@
       <ProjectReference Include="..\BookLibrary.Domain\BookLibrary.Domain.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="Queries\Opinions\" />
+    </ItemGroup>
+
 </Project>
