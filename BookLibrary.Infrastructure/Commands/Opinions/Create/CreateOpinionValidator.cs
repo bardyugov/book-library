@@ -1,7 +1,5 @@
 using BookLibrary.Application.Commands.Opinions.Create;
-using BookLibrary.Domain.Models;
 using FluentValidation;
-using FluentValidation.Validators;
 
 namespace BookLibrary.Infrastructure.Commands.Opinions.Create;
 
@@ -13,6 +11,7 @@ public class CreateOpinionValidator : AbstractValidator<CreateOpinionCommand>
             .NotNull();
 
         RuleFor(v => v.Reaction)
+            .NotEmpty()
             .IsInEnum();
     }
 }

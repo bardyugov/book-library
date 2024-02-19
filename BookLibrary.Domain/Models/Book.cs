@@ -17,7 +17,7 @@ public class Book : BaseEntity
     public int CountReaders { get; set; }
     
     [Required]
-    public Author Author { get; set; } = null!;
+    public Author Author { get; set; }
     
     public List<Comment> Comments { get; set; }
     

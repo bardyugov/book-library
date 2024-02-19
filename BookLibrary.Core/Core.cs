@@ -33,11 +33,11 @@ builder.Services.AddDbContext<DatabaseContext>(
 builder.Services.AddMediatR(x =>
     x.RegisterServicesFromAssemblies(assemblies));
 
-builder.Services.AddTransient<IAuthorRepository, AuthorRepository>();
-builder.Services.AddTransient<IBookRepository, BookRepository>();
-builder.Services.AddTransient<ICommentRepository, CommentRepository>();
-builder.Services.AddTransient<IOpinionRepository, OpinionRepository>();
-builder.Services.AddTransient<IComplaintRepository, ComplaintRepository>();
+builder.Services.AddScoped<IAuthorRepository, AuthorRepository>();
+builder.Services.AddScoped<IBookRepository, BookRepository>();
+builder.Services.AddScoped<ICommentRepository, CommentRepository>();
+builder.Services.AddScoped<IOpinionRepository, OpinionRepository>();
+builder.Services.AddScoped<IComplaintRepository, ComplaintRepository>();
 builder.Services.AddTransient<IPasswordService, PasswordService>();
 builder.Services.AddTransient<IJwtService, JwtService>();
 builder.Services.AddTransient<IConfigService, ConfigService>();

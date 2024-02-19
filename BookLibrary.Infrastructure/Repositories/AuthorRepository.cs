@@ -48,6 +48,7 @@ public class AuthorRepository : IAuthorRepository
         var author = await _context.Authors.FirstOrDefaultAsync(a => a.Email == email, token);
         if (author is null)
             return Result.Fail("Not found author");
+        
         return Result.Ok(author);
     }
 

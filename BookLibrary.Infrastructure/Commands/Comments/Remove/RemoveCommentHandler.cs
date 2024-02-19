@@ -27,6 +27,7 @@ public class RemoveCommentHandler : IRequestHandler<RemoveCommentCommand, Result
         
         await _commentRepository.Remove(request.CommentId, cancellationToken);
         await _commentRepository.SaveChangesAsync(cancellationToken);
+        
         return Result.Ok("Success remove comment");
     }
 }

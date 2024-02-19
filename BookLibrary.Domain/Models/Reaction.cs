@@ -2,6 +2,6 @@ namespace BookLibrary.Domain.Models;
 
 public enum Reaction
 {
-    Like,
-    Dislike
+    Like = 0,
+    Dislike = 1
 }

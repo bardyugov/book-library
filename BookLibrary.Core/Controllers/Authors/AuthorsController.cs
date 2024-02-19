@@ -1,7 +1,6 @@
 using BookLibrary.Application.Commands.Authors.Create;
 using BookLibrary.Application.Commands.Authors.Login;
 using BookLibrary.Application.Queries.Authors;
-using BookLibrary.Application.Services;
 using BookLibrary.Infrastructure.Services.Roles;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -15,7 +14,7 @@ public class AuthorsController : BaseController
 {
     private readonly IMediator _mediator;
     
-    public AuthorsController(IMediator mediator, IAuthenticationService authenticationService)
+    public AuthorsController(IMediator mediator)
     {
         _mediator = mediator;
     }

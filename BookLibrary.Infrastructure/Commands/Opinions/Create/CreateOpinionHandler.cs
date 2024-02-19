@@ -23,6 +23,17 @@ public class CreateOpinionHandler : IRequestHandler<CreateOpinionCommand, Result
         _authenticationService = authenticationService;
         _bookRepository = bookRepository;
     }
+
+    private Opinion MapToResponse(Opinion opinion)
+    {
+        return new Opinion()
+        {
+            Id = opinion.Id,
+            CreateDate = opinion.CreateDate,
+            UpdateDate = opinion.UpdateDate,
+            Reaction = opinion.Reaction
+        };
+    }
     
     public async Task<Result<Opinion>> Handle(CreateOpinionCommand request, CancellationToken cancellationToken)
     {
@@ -41,6 +52,7 @@ public class CreateOpinionHandler : IRequestHandler<CreateOpinionCommand, Result
         await _opinionRepository.Create(newOpinion, cancellationToken);
         await _opinionRepository.SaveChangesAsync(cancellationToken);
 
-        return Result.Ok(newOpinion);
+        var result = MapToResponse(newOpinion);
+        return Result.Ok(result);
     }
 }

@@ -24,6 +24,17 @@ public class CreateComplaintHandler : IRequestHandler<CreateComplaintCommand, Re
         _bookRepository = bookRepository;
     }
 
+    private Complaint MapToResponse(Complaint complaint)
+    {
+        return new Complaint()
+        {
+            Id = complaint.Id,
+            CreateDate = complaint.CreateDate,
+            UpdateDate = complaint.UpdateDate,
+            Content = complaint.Content
+        };
+    }
+    
     public async Task<Result<Complaint>> Handle(CreateComplaintCommand request, CancellationToken cancellationToken)
     {
         var author = await _authenticationService.Authenticate(cancellationToken);
@@ -41,6 +52,7 @@ public class CreateComplaintHandler : IRequestHandler<CreateComplaintCommand, Re
         await _complaintRepository.Create(newComplaint, cancellationToken);
         await _complaintRepository.SaveChangesAsync(cancellationToken);
 
-        return Result.Ok(newComplaint);
+        var result = MapToResponse(newComplaint);
+        return Result.Ok(result);
     }
 }

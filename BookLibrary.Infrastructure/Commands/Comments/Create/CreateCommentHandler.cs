@@ -23,6 +23,17 @@ public class CreateCommentHandler : IRequestHandler<CreateCommentCommand, Result
         _authenticationService = authenticationService;
         _bookRepository = bookRepository;
     }
+
+    private Comment MapToResponse(Comment comment)
+    {
+        return new Comment()
+        {
+            Id = comment.Id,
+            CreateDate = comment.CreateDate,
+            UpdateDate = comment.UpdateDate,
+            Content = comment.Content,
+        };
+    }
     
     public async Task<Result<Comment>> Handle(CreateCommentCommand request, CancellationToken cancellationToken)
     {
@@ -41,6 +52,7 @@ public class CreateCommentHandler : IRequestHandler<CreateCommentCommand, Result
         await _commentRepository.Create(newComment, cancellationToken);
         await _commentRepository.SaveChangesAsync(cancellationToken);
 
-        return Result.Ok(newComment);
+        var result = MapToResponse(newComment);
+        return Result.Ok(result);
     }
 }

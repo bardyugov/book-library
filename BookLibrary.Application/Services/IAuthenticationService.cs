@@ -1,5 +1,4 @@
 using BookLibrary.Domain.Models;
-using Microsoft.AspNetCore.Http;
 
 namespace BookLibrary.Application.Services;
 
