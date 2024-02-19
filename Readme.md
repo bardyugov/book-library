@@ -13,6 +13,7 @@
 # Start
     cd ./Docker
     docker-compose up
+    cd ..
     cd ./Scripts
     bash Build.sh update
     cd ..
