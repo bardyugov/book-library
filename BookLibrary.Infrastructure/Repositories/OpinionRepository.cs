@@ -51,4 +51,13 @@ public class OpinionRepository : IOpinionRepository
     {
         await _databaseContext.SaveChangesAsync(token);
     }
+
+    public async Task<List<Opinion>> FindByBookId(Guid bookId, CancellationToken token)
+    {
+        var opinions = await _databaseContext.Opinions
+            .Where(v => v.Book.Id == bookId)
+            .ToListAsync(token);
+
+        return opinions;
+    }
 }

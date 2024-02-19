@@ -12,4 +12,6 @@ public interface IOpinionRepository : IBaseRepository
     Task<List<Opinion>> FindByAuthorId(Guid authorId, CancellationToken token);
 
     Task<Result<Opinion>> FindById(Guid id, CancellationToken token);
+
+    Task<List<Opinion>> FindByBookId(Guid bookId, CancellationToken token);
 }
