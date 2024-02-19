@@ -9,6 +9,7 @@ using BookLibrary.Infrastructure.Services.JwtService;
 using BookLibrary.Infrastructure.Services.PasswordService;
 using BookLibrary.Core.Behavior;
 using BookLibrary.Core.Middlewares;
+using BookLibrary.Core.Swagger;
 using BookLibrary.Infrastructure.Services.AuthenticationService;
 using BookLibrary.Infrastructure.Services.FileService;
 using BookLibrary.Infrastructure.Services.Roles;
@@ -17,6 +18,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using FluentValidation;
 using MediatR;
+using Microsoft.Extensions.Options;
+using Swashbuckle.AspNetCore.SwaggerGen;
 
 var assemblies = AppDomain.CurrentDomain.GetAssemblies();
 
@@ -34,6 +37,7 @@ builder.Services.AddTransient<IAuthorRepository, AuthorRepository>();
 builder.Services.AddTransient<IBookRepository, BookRepository>();
 builder.Services.AddTransient<ICommentRepository, CommentRepository>();
 builder.Services.AddTransient<IOpinionRepository, OpinionRepository>();
+builder.Services.AddTransient<IComplaintRepository, ComplaintRepository>();
 builder.Services.AddTransient<IPasswordService, PasswordService>();
 builder.Services.AddTransient<IJwtService, JwtService>();
 builder.Services.AddTransient<IConfigService, ConfigService>();
@@ -43,6 +47,7 @@ builder.Services.AddHttpContextAccessor();
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddTransient<IConfigureOptions<SwaggerGenOptions>, SwaggerOptions>();
 
 builder.Services.AddControllers().AddJsonOptions(configure =>
 {
