@@ -19,3 +19,5 @@
     cd ..
     cd BookLibrary.Core 
     dotnet run
+# Swagger 
+    http://localhost:5126/swagger/index.html
