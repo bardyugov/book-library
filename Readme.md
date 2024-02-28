@@ -11,6 +11,7 @@
 
 
 # Start
+    dotnet tool install --global dotnet-ef
     cd ./Docker
     docker-compose up
     cd ..
