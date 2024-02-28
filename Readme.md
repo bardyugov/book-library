@@ -18,7 +18,8 @@
     cd ./Scripts
     bash Build.sh update
     cd ..
-    cd BookLibrary.Core 
+    cd BookLibrary.Core
+    mkdir wwwroot
     dotnet run
 # Swagger 
     http://localhost:5126/swagger/index.html
